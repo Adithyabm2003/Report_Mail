@@ -28,7 +28,9 @@ def send_automated_emails(df, sender_email, sender_password, cc_email, log_conta
                 log_container.markdown(f"--- \n**Processing Site: {site_number}**")
 
                 # LOGIC 1: If anyone in a site has DOWNLOAD = YES, skip the entire site.
-                if 'YES' in site_df['DOWNLOAD'].unique().upper():
+                # Corrected line: 'str.upper()' is a vectorized operation on the Series,
+                # which is the correct way to handle this in pandas.
+                if 'YES' in site_df['DOWNLOAD'].astype(str).str.upper().unique():
                     log_container.warning(f"Site {site_number}: At least one user has downloaded. No emails will be sent.")
                     continue
 
